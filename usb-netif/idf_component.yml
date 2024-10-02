@@ -1,0 +1,17 @@
+## IDF Component Manager Manifest File
+description: Ethernet over USB protocol
+repository: git@github.com:esp32-open-source/usb-components.git
+repository_info:
+  path: usb-netif
+url: https://github.com/esp32-open-source/usb-components/tree/master/usb-netif
+version: 0.1.0
+license: "MIT"
+targets:
+- esp32s2
+- esp32s3
+- esp32p4
+
+dependencies:
+  espressif/esp_tinyusb:
+    version: "^1.4.0"
+  idf: "^5.0"

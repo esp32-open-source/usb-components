@@ -1,0 +1,52 @@
+menu "TCP/IP over USB netif"
+
+    menu "USB netif ID"
+        config USB_NETIF_IF_KEY
+            string "Espressif netif if key"
+            default "usb-wired"
+            help
+                Espressif netif if key.
+
+    endmenu
+
+    menu "USB netif ip info configuration"
+        config USB_NETIF_DEFAULT_MAC
+            string "USB netif default mac"
+            default "02:02:11:22:33:44"
+            help
+                USB netif configuration mac address.
+
+        config USB_NETIF_DEFAULT_IP
+            string "USB netif IP"
+            default "192.168.4.1"
+            help
+                USB netif ip info configuration IP.
+        
+        config USB_NETIF_DEFAULT_GATEWAY
+            string "USB netif gateway"
+            default "192.168.4.1"
+            help
+                USB netif ip info configuration gateway.
+
+        config USB_NETIF_DEFAULT_NETMASK
+            string "USB netif netmask"
+            default "255.255.255.0"
+            help
+                USB netif ip info configuration netmask.
+    endmenu
+
+    menu "Network driver (ECM/NCM/RNDIS)"
+        choice TINYUSB_NET_MODE
+            prompt "Network mode"
+            default TINYUSB_NET_MODE_NCM
+        endchoice
+    endmenu # "Network driver (ECM/NCM/RNDIS)"
+
+    config USB_NETIF_HTTP_SERVER
+        bool "Run default http server - not implemented yet"
+        default n
+
+    menu "Default http server config"
+        depends on USB_NETIF_HTTP_SERVER
+    endmenu
+endmenu # ""
