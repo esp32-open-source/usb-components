@@ -1,0 +1,10 @@
+## IDF Component Manager Manifest File
+description: "Simple midi parser component which can be used in usb host app"
+repository: git@github.com:esp32-open-source/usb-components.git
+repository_info:
+  path: usb-netif
+url: https://github.com/esp32-open-source/usb-components/tree/master/midi-parser
+version: 0.1.0
+license: "MIT"
+tags:
+  "midi"
