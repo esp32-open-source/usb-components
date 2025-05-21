@@ -4,7 +4,8 @@ repository: git@github.com:esp32-open-source/usb-components.git
 repository_info:
   path: usb-netif
 url: https://github.com/esp32-open-source/usb-components/tree/master/midi-parser
-version: 0.1.0
+version: 0.1.1
 license: "MIT"
 tags:
-  "midi"
+  - midi
+  - usb

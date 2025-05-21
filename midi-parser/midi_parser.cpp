@@ -26,7 +26,7 @@ esp_err_t MidiParser::init(void (*callback)(const MidiMessage*)) {
         return ESP_OK;
     } else if (m_mode == HandlingMode::EVENT_QUEUE) {
         // Create a queue with default size 10; could be configurable via Kconfig
-        m_queue = xQueueCreate(10, sizeof(MidiMessage*));
+        m_queue = xQueueCreate(10, sizeof(MidiMessage));
         if (m_queue == nullptr) {
             return ESP_ERR_NO_MEM;
         }
@@ -46,18 +46,13 @@ esp_err_t MidiParser::get_next_message(MidiMessage& msg, TickType_t ticks_to_wai
         return ESP_ERR_INVALID_STATE;
     }
 
-    MidiMessage* msg_ptr = nullptr;
+    MidiMessage msg_ptr;
     BaseType_t received = xQueueReceive(m_queue, &msg_ptr, ticks_to_wait);
     if (received != pdPASS) {
         return (received == pdFALSE) ? ESP_ERR_TIMEOUT : ESP_FAIL; // Adjust based on FreeRTOS queue errors
     }
 
-    if (msg_ptr == nullptr) {
-        return ESP_ERR_INVALID_STATE;
-    }
-
-    msg = *msg_ptr; // Copy the message data to the output parameter
-    delete[] msg_ptr; // Release allocated memory
+    msg = msg_ptr;
 
     return ESP_OK;
 }
@@ -259,17 +254,12 @@ void MidiParser::deliver_message(const MidiMessage* msg) {
         m_callback(msg);
     } else if (m_mode == HandlingMode::EVENT_QUEUE) {
         // Allocate a copy of the message to store in the queue
-        auto* copied_msg = new MidiMessage(*msg);
-        if (copied_msg == nullptr) {
-            ESP_LOGE("MidiParser", "Memory allocation failed for event queue");
-            return;
-        }
+        auto copied_msg = MidiMessage(*msg);
 
         // Send to queue; wait indefinitely (adjust if needed)
-        BaseType_t success = xQueueSend(m_queue, copied_msg, 0);
+        BaseType_t success = xQueueSend(m_queue, &copied_msg, 0);
         if (success != pdPASS) {
             ESP_LOGW("MidiParser", "Failed to send message to queue");
-            delete copied_msg;
         }
     }
 }
