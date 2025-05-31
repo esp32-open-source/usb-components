@@ -1,0 +1,12 @@
+## IDF Component Manager Manifest File
+description: "HID parser to use in ble and usb hid host devices. It should be hardware independent even if designed and tested with esp32."
+repository: git@github.com:esp32-open-source/usb-components.git
+repository_info:
+  path: hid-parser
+url: https://github.com/esp32-open-source/usb-components/tree/master/hid-parser
+version: 0.1.0
+license: "MIT"
+tags:
+  - usb
+  - ble
+  - hid
